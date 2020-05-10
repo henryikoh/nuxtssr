@@ -1,0 +1,12 @@
+steps:
+  # build the container 
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--network=cloudbuild','-t', 'gcr.io/senpai-academy/academy-server', '.']
+  # push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/senpai-academy/academy-server']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'academy-server', '--image', 'gcr.io/senpai-academy/academy-server', '--region', 'us-central1', '--platform', 'managed', '--allow-unauthenticated']
+ images: 
+ - 'gcr.io/senpai-academy/academy-server'
